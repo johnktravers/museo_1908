@@ -1,10 +1,8 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/photograph'
-require './lib/artist'
 require './lib/curator'
 
-class ArtistTest < Minitest::Test
+class CuratorTest < Minitest::Test
 
   def setup
     create_photos
@@ -54,9 +52,10 @@ class ArtistTest < Minitest::Test
     add_artists
     add_photos
 
+    assert_equal [@photo_2], @curator.find_photographs_by_artist(@artist_2)
+
     expected = [@photo_3, @photo_4]
     assert_equal expected, @curator.find_photographs_by_artist(@artist_3)
-    assert_equal [@photo_2], @curator.find_photographs_by_artist(@artist_2)
   end
 
   def test_artists_with_multiple_photographs
@@ -70,10 +69,22 @@ class ArtistTest < Minitest::Test
     add_artists
     add_photos
 
-    expected = [@photo_2, @photo_3, @photo_4]
-    assert_equal expected, @curator.photographs_taken_by_artist_from("United States")
     assert_equal [@photo_1], @curator.photographs_taken_by_artist_from("France")
     assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
+
+    expected = [@photo_2, @photo_3, @photo_4]
+    assert_equal expected, @curator.photographs_taken_by_artist_from("United States")
+  end
+
+  def test_load_photographs
+    @curator.load_photographs('./data/photographs.csv')
+
+    assert_equal 4, @curator.photographs.length
+    assert_instance_of Photograph, @curator.photographs[3]
+    assert_equal "4", @curator.photographs[3].id
+    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs[3].name
+    assert_equal "3", @curator.photographs[3].artist_id
+    assert_equal "1962", @curator.photographs[3].year
   end
 
 
