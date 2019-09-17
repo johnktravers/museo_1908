@@ -54,4 +54,12 @@ class Curator
     end
   end
 
+  def photographs_taken_between(range)
+    in_range = []
+    range.to_a.each do |year|
+      in_range += @photographs.find_all { |photo| photo.year.to_i == year }
+    end
+    in_range
+  end
+
 end

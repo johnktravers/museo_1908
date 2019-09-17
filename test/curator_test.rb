@@ -99,6 +99,14 @@ class CuratorTest < Minitest::Test
     assert_equal "Mexico", @curator.artists[4].country
   end
 
+  def test_photographs_taken_between
+    @curator.load_photographs('./data/photographs.csv')
+
+    assert_equal 2, @curator.photographs_taken_between(1950..1965).length
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", @curator.photographs_taken_between(1950..1965)[0].name
+    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
+  end
+
 
   #-------------Helper Methods-------------#
 
