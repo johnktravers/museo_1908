@@ -59,6 +59,13 @@ class ArtistTest < Minitest::Test
     assert_equal [@photo_2], @curator.find_photographs_by_artist(@artist_2)
   end
 
+  def test_artists_with_multiple_photographs
+    add_artists
+    add_photos
+
+    assert_equal [@artist_3], @curator.artists_with_multiple_photographs
+  end
+
 
   #-------------Helper Methods-------------#
 
