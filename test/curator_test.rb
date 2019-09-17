@@ -7,8 +7,8 @@ require './lib/curator'
 class ArtistTest < Minitest::Test
 
   def setup
-    create_photos_1_and_2
-    create_artists_1_and_2
+    create_photos
+    create_artists
 
     @curator = Curator.new
   end
@@ -39,23 +39,30 @@ class ArtistTest < Minitest::Test
   end
 
   def test_find_artist_by_id
-    @curator.add_artist(@artist_1)
-    @curator.add_artist(@artist_2)
+    add_artists
 
-    assert_equal @artist_1, @curator.find_artist_by_id("1")
+    assert_equal @artist_3, @curator.find_artist_by_id("3")
   end
 
   def test_find_photograph_by_id
-    @curator.add_photograph(@photo_1)
-    @curator.add_photograph(@photo_2)
+    add_photos
 
     assert_equal @photo_2, @curator.find_photograph_by_id("2")
+  end
+
+  def test_find_photographs_by_artist
+    add_artists
+    add_photos
+
+    expected = [@photo_3, @photo_4]
+    assert_equal expected, @curator.find_photographs_by_artist(@artist_3)
+    assert_equal [@photo_2], @curator.find_photographs_by_artist(@artist_2)
   end
 
 
   #-------------Helper Methods-------------#
 
-  def create_photos_1_and_2
+  def create_photos
     @photo_1 = Photograph.new({
       id: "1",
       name: "Rue Mouffetard, Paris (Boy with Bottles)",
@@ -68,9 +75,21 @@ class ArtistTest < Minitest::Test
       artist_id: "2",
       year: "1941"
     })
+    @photo_3 = Photograph.new({
+      id: "3",
+      name: "Identical Twins, Roselle, New Jersey",
+      artist_id: "3",
+      year: "1967"
+    })
+    @photo_4 = Photograph.new({
+      id: "4",
+      name: "Monolith, The Face of Half Dome",
+      artist_id: "3",
+      year: "1927"
+    })
   end
 
-  def create_artists_1_and_2
+  def create_artists
     @artist_1 = Artist.new({
       id: "1",
       name: "Henri Cartier-Bresson",
@@ -85,6 +104,26 @@ class ArtistTest < Minitest::Test
       died: "1984",
       country: "United States"
     })
+    @artist_3 = Artist.new({
+      id: "3",
+      name: "Diane Arbus",
+      born: "1923",
+      died: "1971",
+      country: "United States"
+    })
+  end
+
+  def add_photos
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+    @curator.add_photograph(@photo_3)
+    @curator.add_photograph(@photo_4)
+  end
+
+  def add_artists
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
   end
 
 end
