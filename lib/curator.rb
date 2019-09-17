@@ -1,4 +1,4 @@
-require 'csv'
+require './lib/fileio'
 require './lib/photograph'
 require './lib/artist'
 
@@ -43,14 +43,14 @@ class Curator
   end
 
   def load_photographs(filename)
-    CSV.foreach(filename, headers: true, header_converters: :symbol) do |row|
-      @photographs.push(Photograph.new(row.to_h))
+    FileIO.load_photographs(filename).each do |photo_details|
+      @photographs.push(Photograph.new(photo_details))
     end
   end
 
   def load_artists(filename)
-    CSV.foreach(filename, headers: true, header_converters: :symbol) do |row|
-      @artists.push(Artist.new(row.to_h))
+    FileIO.load_artists(filename).each do |artist_details|
+      @artists.push(Artist.new(artist_details))
     end
   end
 
