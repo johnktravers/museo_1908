@@ -66,6 +66,16 @@ class ArtistTest < Minitest::Test
     assert_equal [@artist_3], @curator.artists_with_multiple_photographs
   end
 
+  def test_photographs_taken_by_artist_from
+    add_artists
+    add_photos
+
+    expected = [@photo_2, @photo_3, @photo_4]
+    assert_equal expected, @curator.photographs_taken_by_artist_from("United States")
+    assert_equal [@photo_1], @curator.photographs_taken_by_artist_from("France")
+    assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
+  end
+
 
   #-------------Helper Methods-------------#
 
