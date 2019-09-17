@@ -87,6 +87,18 @@ class CuratorTest < Minitest::Test
     assert_equal "1962", @curator.photographs[3].year
   end
 
+  def test_load_artists
+    @curator.load_artists('./data/artists.csv')
+
+    assert_equal 6, @curator.artists.length
+    assert_instance_of Artist, @curator.artists[4]
+    assert_equal "5", @curator.artists[4].id
+    assert_equal "Manuel Alvarez Bravo", @curator.artists[4].name
+    assert_equal "1902", @curator.artists[4].born
+    assert_equal "2002", @curator.artists[4].died
+    assert_equal "Mexico", @curator.artists[4].country
+  end
+
 
   #-------------Helper Methods-------------#
 

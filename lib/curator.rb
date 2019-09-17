@@ -48,4 +48,10 @@ class Curator
     end
   end
 
+  def load_artists(filename)
+    CSV.foreach(filename, headers: true, header_converters: :symbol) do |row|
+      @artists.push(Artist.new(row.to_h))
+    end
+  end
+
 end
