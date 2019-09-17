@@ -62,4 +62,18 @@ class Curator
     in_range
   end
 
+  def artists_photographs_by_age(artist)
+    titles_by_age = {}
+    find_photographs_by_artist(artist).each do |photo|
+      age = photo.year.to_i - artist.born.to_i
+      if !titles_by_age[age]
+        titles_by_age[age] = photo.name
+      else
+        titles_by_age[age] = [titles_by_age[age]]
+        titles_by_age[age].push(photo.name)
+      end
+    end
+    titles_by_age
+  end
+
 end

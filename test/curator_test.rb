@@ -107,6 +107,29 @@ class CuratorTest < Minitest::Test
     assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
   end
 
+  def test_artists_photographs_by_age
+    @curator.load_photographs('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
+    diane_arbus = @curator.find_artist_by_id("3")
+
+    expected = {
+      44 => "Identical Twins, Roselle, New Jersey",
+      39 => "Child with Toy Hand Grenade in Central Park"
+    }
+    assert_equal expected, @curator.artists_photographs_by_age(diane_arbus)
+
+
+    # Test for photographs taken in the same year
+    create_and_add_diane_arbus_photos
+
+    expected = {
+      44 => "Identical Twins, Roselle, New Jersey",
+      39 => "Child with Toy Hand Grenade in Central Park",
+      40 => ["Teenage Couple on Hudson Street", "Triplets in Their Bedroom"]
+    }
+    assert_equal expected, @curator.artists_photographs_by_age(diane_arbus)
+  end
+
 
   #-------------Helper Methods-------------#
 
@@ -172,6 +195,27 @@ class CuratorTest < Minitest::Test
     @curator.add_artist(@artist_1)
     @curator.add_artist(@artist_2)
     @curator.add_artist(@artist_3)
+  end
+
+
+  #-----------Daine Arbus Photos-----------#
+
+  def create_and_add_diane_arbus_photos
+    @photo_5 = Photograph.new({
+      id: "5",
+      name: "Teenage Couple on Hudson Street",
+      artist_id: "3",
+      year: "1963"
+    })
+    @photo_6 = Photograph.new({
+      id: "6",
+      name: "Triplets in Their Bedroom",
+      artist_id: "3",
+      year: "1963"
+    })
+
+    @curator.add_photograph(@photo_5)
+    @curator.add_photograph(@photo_6)
   end
 
 end
