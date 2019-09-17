@@ -100,11 +100,11 @@ class CuratorTest < Minitest::Test
   end
 
   def test_photographs_taken_between
-    @curator.load_photographs('./data/photographs.csv')
+    add_artists
+    add_photos
 
-    assert_equal 2, @curator.photographs_taken_between(1950..1965).length
-    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", @curator.photographs_taken_between(1950..1965)[0].name
-    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
+    assert_equal [], @curator.photographs_taken_between(1943..1950)
+    assert_equal [@photo_1, @photo_3], @curator.photographs_taken_between(1950..1970)
   end
 
   def test_artists_photographs_by_age
